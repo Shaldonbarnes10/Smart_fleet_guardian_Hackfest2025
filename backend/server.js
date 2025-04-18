@@ -18,13 +18,6 @@ const pool = new Pool({
     rejectUnauthorized: false // INSECURE - for development only!
   }
 });
-// const pool = new Pool({
-//   user: process.env.DB_USER,
-//   host: process.env.DB_HOST,
-//   database: process.env.DB_NAME,
-//   password: process.env.DB_PASSWORD,
-//   port: process.env.DB_PORT,
-// });
 
 pool.query('SELECT NOW()')
   .then(() => console.log('✅ PostgreSQL connected'))
@@ -34,25 +27,6 @@ pool.query('SELECT NOW()')
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-
-// Helper function to execute queries
-async function query(text, params) {
-  const client = await pool.connect();
-  try {
-    return await client.query(text, params);
-  } finally {
-    client.release();
-  }
-}
-
-// JWT generation
-// function generateToken(user) {
-//   return jwt.sign(
-//     { id: user.id, email: user.email },
-//     process.env.JWT_SECRET,
-//     { expiresIn: '1h' }
-//   );
-// }
 
 // Routes
 app.post('/api/auth/signup', async (req, res) => {
@@ -83,7 +57,7 @@ app.post('/api/auth/login', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT * FROM users WHERE email = $1 AND password = $2',
+      'SELECT first_name, last_name, email FROM users WHERE email = $1 AND password = $2',
       [email, password]
     );
 
@@ -91,34 +65,40 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    res.json({ message: 'Login successful' });
+    const user = result.rows[0];
+    res.json({ 
+      message: 'Login successful',
+      user: {
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email
+      }
+    });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ message: 'Error during login' });
   }
 });
-
-// Protected route example
-app.get('/api/auth/me', async (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
-  }
+app.post('/api/auth/login', async (req, res) => {
+  const { email, password } = req.body;
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await query('SELECT id, first_name, last_name, email FROM users WHERE id = $1', [decoded.id]);
-    const user = result.rows[0];
+    const result = await pool.query(
+      'SELECT id, first_name, last_name, email FROM users WHERE email = $1 AND password = $2',
+      [email, password]
+    );
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    if (result.rows.length === 0) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    res.json({ user });
+    res.json({ 
+      message: 'Login successful',
+      user: result.rows[0] 
+    });
   } catch (error) {
-    console.error('Auth error:', error);
-    res.status(401).json({ message: 'Invalid token' });
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Error during login' });
   }
 });
 
@@ -126,3 +106,4 @@ app.get('/api/auth/me', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
