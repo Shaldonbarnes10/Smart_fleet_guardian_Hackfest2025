@@ -9,7 +9,7 @@ const Navbar = () => {
       
       {/* Navigation buttons */}
       <div className="hidden md:flex gap-6">
-        <Link to="/home">
+        <Link to="/dashboard">
           <button className="text-white hover:bg-yellow-600 px-4 py-2 rounded-lg cursor-pointer">
             Home
           </button>
