@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,6 +10,10 @@ const AuthForm = () => {
     password: "",
     confirmPassword: "",
   });
+  const [error, setError] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -19,6 +24,7 @@ const AuthForm = () => {
       password: "",
       confirmPassword: "",
     });
+    setError("");
   };
 
   const handleChange = (e) => {
@@ -29,7 +35,7 @@ const AuthForm = () => {
     e.preventDefault();
 
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match.");
+      setError("Passwords do not match.");
       return;
     }
 
@@ -56,88 +62,110 @@ const AuthForm = () => {
 
       if (response.ok) {
         alert(isLogin ? "Login successful!" : "Signup successful!");
+        navigate("/dashboard");
       } else {
-        alert(result.message || "Something went wrong");
+        setError(result.message || "Something went wrong");
       }
     } catch (error) {
-      alert("Error connecting to server");
+      setError("Error connecting to server");
       console.error(error);
     }
   };
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full">
-      <h2 className="text-2xl font-bold text-yellow-600 mb-6">
-        {isLogin ? "Login to your account" : "Create a new account"}
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {!isLogin && (
-          <>
-            <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-xl focus:outline-yellow-500"
-              required
-            />
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-xl focus:outline-yellow-500"
-              required
-            />
-          </>
-        )}
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-xl focus:outline-yellow-500"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-xl focus:outline-yellow-500"
-          required
-        />
-        {!isLogin && (
+    <div className="min-h-screen bg-yellow-50 flex items-center justify-center px-4">
+      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+        <h2 className="text-2xl font-semibold text-yellow-600 mb-6 text-center">
+          {isLogin ? "Login to your account" : "Create a new account"}
+        </h2>
+        {error && <p className="text-red-600 text-sm text-center mb-4">{error}</p>}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {!isLogin && (
+            <>
+              <input
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                required
+              />
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                required
+              />
+            </>
+          )}
           <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-xl focus:outline-yellow-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
             required
           />
-        )}
-        <button
-          type="submit"
-          className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-xl transition"
-        >
-          {isLogin ? "Login" : "Sign Up"}
-        </button>
-      </form>
-      <p className="mt-4 text-center text-sm text-gray-600">
-        {isLogin ? "Don't have an account?" : "Already have an account?"}
-        <span
-          onClick={toggleForm}
-          className="ml-2 text-yellow-600 hover:underline cursor-pointer"
-        >
-          {isLogin ? "Sign Up" : "Login"}
-        </span>
-      </p>
+          <div className="relative">
+            <input
+              type={isPasswordVisible ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+              className="absolute right-3 top-2 text-yellow-500 text-sm"
+            >
+              {isPasswordVisible ? "Hide" : "Show"}
+            </button>
+          </div>
+          {!isLogin && (
+            <div className="relative">
+              <input
+                type={isConfirmPasswordVisible ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
+                className="absolute right-3 top-2 text-yellow-500 text-sm"
+              >
+                {isConfirmPasswordVisible ? "Hide" : "Show"}
+              </button>
+            </div>
+          )}
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-lg transition cursor-pointer"
+          >
+            {isLogin ? "Login" : "Sign Up"}
+          </button>
+        </form>
+        <p className="mt-4 text-center text-sm text-gray-600">
+          {isLogin ? "Don't have an account?" : "Already have an account?"}
+          <span
+            onClick={toggleForm}
+            className="ml-2 text-yellow-600 hover:underline cursor-pointer"
+          >
+            {isLogin ? "Sign Up" : "Login"}
+          </span>
+        </p>
+      </div>
     </div>
   );
 };
