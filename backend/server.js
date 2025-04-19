@@ -102,6 +102,8 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
+app.use(express.static('public'));
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

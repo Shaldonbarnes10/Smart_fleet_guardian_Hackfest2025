@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import { AuthProvider } from "./auth-context";
 import AuthForm from "./components/auth/AuthForm";
-import Statistics from "./pages/StatisticsPage";
 import MoreStatistics from "./pages/MoreStatistics";
 import Dashboard from "./pages/Dashboard";
 import AboutUs from "./pages/aboutUs";
+import Profile from "./pages/Profile";
 
 // Parameter detail components
 import TyrePressure from "./components/Parameters/tyrePressure";
@@ -21,9 +21,9 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/auth" element={<AuthForm />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/Statistics" element={<Statistics />} />
           <Route path="/MoreStatistics" element={<MoreStatistics />} />
           <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/profile" element={<Profile />} />
 
           {/* Individual parameter detail routes */}
           <Route

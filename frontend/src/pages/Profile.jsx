@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
     const user = {
-        name: "Anish Bhat",
+        name: "Guest",
         email: "anish@example.com",
         role: "Driver",
         joined: "January 2024",
@@ -35,9 +35,6 @@ const Profile = () => {
           <p className="text-gray-500 text-sm mt-1">Joined: {user.joined}</p>
 
           <div className="mt-6 flex justify-center md:justify-start gap-4">
-            <button className="px-6 py-2 cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-xl shadow-md transition">
-              Edit Profile
-            </button>
             <button onClick={() => navigate('/auth')} className="px-6 py-2 cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-xl shadow-sm transition">
               Logout
             </button>

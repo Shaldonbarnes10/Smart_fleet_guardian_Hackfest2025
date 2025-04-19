@@ -4,17 +4,17 @@ const MoreStatistics = () => {
   const stats = [
     {
       title: 'Tyre Pressure',
-      value: '33 psi',
+      value: '131.95 psi',
       route: '/MoreStatistics/tyre-pressure',
     },
     {
       title: 'Total Life',
-      value: '85%',
+      value: '648.99',
       route: '/MoreStatistics/total-life',
     },
     {
       title: 'Engine Temperature',
-      value: '90°C',
+      value: '109.33°C',
       route: '/MoreStatistics/engine-temperature',
     },
     {
@@ -28,7 +28,7 @@ const MoreStatistics = () => {
     <div className="min-h-screen bg-gradient-to-br from-white via-yellow-50 to-yellow-100 p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">
-          More Vehicle Statistics
+          Vehicle Statistics
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">

@@ -1,21 +1,80 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../dashboard/Navbar";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const OilLevel = () => {
-  const oilLevel = "Good"; // Example value from ML/backend
-  const lastChecked = "18 April 2025, 4:30 PM";
+  const [data, setData] = useState([]);
+  const [oilStatus, setOilStatus] = useState("Loading...");
+  const lastChecked = "18 April 2025, 4:30 PM"; // Can be dynamic later
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/sample.csv"); // <-- update with your correct path
+        const text = await response.text();
+        const parsed = parseCSV(text);
+        setData(parsed);
+
+        const latestOilValue = parsed[parsed.length - 1]?.oil_level;
+        setOilStatus(latestOilValue < 30 ? "Low" : "Good");
+      } catch (err) {
+        console.error("Failed to load oil data:", err);
+        setOilStatus("Error");
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const parseCSV = (csvText) => {
+    const lines = csvText.trim().split("\n").slice(1); // remove header
+    return lines.map((line) => {
+      const values = line.split(",");
+      return {
+        oil_level: parseFloat(values[3]), // Assuming oil_level is 3rd column (index 2)
+      };
+    });
+  };
+
+  const chartData = {
+    labels: data.map((_, i) => i + 1),
+    datasets: [
+      {
+        label: "Oil Level",
+        data: data.map((d) => d.oil_level),
+        fill: false,
+        borderColor: "#34d399", // emerald-400
+        backgroundColor: "#34d399",
+        tension: 0.2,
+      },
+    ],
+  };
 
   return (
     <div className="min-h-screen bg-yellow-50">
       <Navbar />
       <div className="max-w-4xl mx-auto px-6 py-10">
         <h1 className="text-4xl font-bold text-yellow-700 mb-6">🛢️ Oil Level Details</h1>
-        
+
         <div className="bg-white p-8 rounded-xl shadow-lg space-y-6">
           <div>
             <h2 className="text-2xl font-semibold text-gray-800">Current Status</h2>
-            <p className={`text-3xl font-bold ${oilLevel === "Low" ? "text-red-600" : "text-green-600"}`}>{oilLevel}</p>
+            <p className={`text-3xl font-bold ${oilStatus === "Low" ? "text-red-600" : "text-green-600"}`}>
+              {oilStatus}
+            </p>
             <p className="text-sm text-gray-500">Last checked: {lastChecked}</p>
           </div>
 
@@ -28,11 +87,16 @@ const OilLevel = () => {
 
           <div>
             <h2 className="text-xl font-semibold text-yellow-700">Recommended Actions</h2>
-            {oilLevel === "Low" ? (
+            {oilStatus === "Low" ? (
               <p className="text-red-600">⚠️ Refill the engine oil immediately to prevent damage.</p>
             ) : (
               <p className="text-green-700">✅ No action needed. You're good to go!</p>
             )}
+          </div>
+
+          <div className="mt-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">Oil Level Over Time</h2>
+            <Line data={chartData} />
           </div>
 
           <Link
