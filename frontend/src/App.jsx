@@ -5,6 +5,7 @@ import AuthForm from "./components/auth/AuthForm";
 import Statistics from "./pages/StatisticsPage";
 import MoreStatistics from "./pages/MoreStatistics";
 import Dashboard from "./pages/Dashboard";
+import AboutUs from "./pages/aboutUs";
 
 // Parameter detail components
 import TyrePressure from "./components/Parameters/tyrePressure";
@@ -22,11 +23,18 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/Statistics" element={<Statistics />} />
           <Route path="/MoreStatistics" element={<MoreStatistics />} />
+          <Route path="/AboutUs" element={<AboutUs />} />
 
           {/* Individual parameter detail routes */}
-          <Route path="/MoreStatistics/tyre-pressure" element={<TyrePressure />} />
+          <Route
+            path="/MoreStatistics/tyre-pressure"
+            element={<TyrePressure />}
+          />
           <Route path="/MoreStatistics/total-life" element={<TotalLife />} />
-          <Route path="/MoreStatistics/engine-temperature" element={<EngineTemperature />} />
+          <Route
+            path="/MoreStatistics/engine-temperature"
+            element={<EngineTemperature />}
+          />
           <Route path="/MoreStatistics/oil-level" element={<OilLevel />} />
         </Routes>
       </Router>

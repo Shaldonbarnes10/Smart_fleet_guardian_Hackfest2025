@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   return (
     <div className="bg-yellow-500 p-4 flex justify-between items-center">
       {/* Logo on the left */}
       <div className="text-2xl text-white font-bold">Fleet Guardian</div>
-      
+
       {/* Navigation buttons */}
       <div className="hidden md:flex gap-6">
         <Link to="/dashboard">
@@ -19,9 +20,9 @@ const Navbar = () => {
             Statistics
           </button>
         </Link>
-        <Link to="/about">
+        <Link to="/aboutUs">
           <button className="text-white hover:bg-yellow-600 px-4 py-2 rounded-lg cursor-pointer">
-            About
+            About Us
           </button>
         </Link>
         <Link to="/profile">
@@ -38,11 +39,7 @@ const Navbar = () => {
 
       {/* Logo on the right */}
       <Link to="/dashboard">
-        <img
-          src="/path/to/logo.png"
-          alt="Logo"
-          className="w-12 h-12 rounded-full"
-        />
+        <img src={logo} alt="Logo" className="h-12 w-auto" />
       </Link>
     </div>
   );
