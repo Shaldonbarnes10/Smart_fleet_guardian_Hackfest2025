@@ -17,7 +17,6 @@ def predict_from_json(json_data, prediction_type):
         str: A JSON string containing the prediction result.
     """
     
-
     try:
         data = json.loads(json_data)
         input_df = pd.DataFrame([data])  # Create a DataFrame from the JSON data
@@ -44,9 +43,6 @@ def predict_from_json(json_data, prediction_type):
             print(f"Prediction: {prediction}")
             
             prediction_result['RUL_prediction'] = f"{prediction:.2f} hours"
-
-
-            
 
         elif prediction_type == 'tire_anomaly':
             model_path = 'tire anamoly.pkl'
