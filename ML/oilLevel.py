@@ -16,6 +16,7 @@ except FileNotFoundError:
 # Features and target
 X = df.drop(columns=['oil_level_anomaly'])  # Features
 y = df['oil_level_anomaly'].astype(int)    # Binary target (assuming 0 for normal, 1 for anomaly)
+print(X.columns.tolist())
 
 # Train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)

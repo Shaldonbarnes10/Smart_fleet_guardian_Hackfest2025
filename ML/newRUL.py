@@ -3,8 +3,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
-import joblib  # For saving and loading the model
+import joblib
 import os
+
 # Load the data
 file_path = "truckData.csv"
 data = pd.read_csv(file_path)
@@ -43,19 +44,18 @@ print(f"Mean Absolute Error: {mae:.2f} hours")
 joblib.dump(model, 'rul_predictor_model.pkl')
 print("Model saved to rul_predictor_model.pkl")
 
-# Predict RUL for a new sample vehicle
-# sample_vehicle = pd.DataFrame([{
-#     'Engine_Temperature': 95,
-#     'Engine_RPM': 3200,
-#     'Coolant_Temperature': 85,
-#     'Oil_Level': 68,
-#     'Battery_Voltage': 12.2,
-#     'Mileage': 140000,
-#     'Tire_Pressure': 1030,
-#     'Fuel_Pressure': 50
-# }])
+sample_vehicle = pd.DataFrame([{
+    'Engine_Temperature': 95,
+    'Engine_RPM': 3200,
+    'Coolant_Temperature': 85,
+    'Oil_Level': 68,
+    'Battery_Voltage': 12.2,
+    'Mileage': 140000,
+    'Tire_Pressure': 1030,
+    'Fuel_Pressure': 50
+}])
 
-# # Load the model (optional, if running prediction in a separate script)
-# # loaded_model = joblib.load('rul_predictor_model.pkl')
-# # predicted_rul = loaded_model.predict(sample_vehicle)
-# # print(f"Predicted RUL for sample vehicle: {predicted_rul[0]:.2f} hours")
+# Load the model
+loaded_model = joblib.load('rul_predictor_model.pkl')
+predicted_rul = loaded_model.predict(sample_vehicle)
+print(f"Predicted RUL for sample vehicle: {predicted_rul[0]:.2f} hours")

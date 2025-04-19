@@ -45,30 +45,21 @@ def predict_from_json(json_data, prediction_type):
             prediction_result['RUL_prediction'] = f"{prediction:.2f} hours"
 
         elif prediction_type == 'tire_anomaly':
-            model_path = 'tire anamoly.pkl'
-            scaler_path = 'scaler.pkl'  # Assuming you saved a scaler with this name
+            model_path = 'tire_anomaly_model.pkl'
             model = joblib.load(model_path)
-            scaler = joblib.load(scaler_path)
-            scaled_data = scaler.transform(input_df)
-            prediction = model.predict(scaled_data)[0]
-            prediction_result['tire_pressure_anomaly_prediction'] = int(prediction)  # Assuming binary output
+            prediction = model.predict(input_df)[0]  # Predict directly on the input DataFrame
+            prediction_result['tire_pressure_anomaly_prediction'] = int(prediction)
 
         elif prediction_type == 'oil_level_anomaly':
-            model_path = 'oil level.pkl'
-            scaler_path = 'oil level scalar .pkl'
+            model_path = 'oil_level_anomaly_model.pkl'
             model = joblib.load(model_path)
-            scaler = joblib.load(scaler_path)
-            scaled_data = scaler.transform(input_df)
-            prediction = model.predict(scaled_data)[0]
-            prediction_result['oil_level_anomaly_prediction'] = int(prediction)  # Assuming binary output
+            prediction = model.predict(input_df)[0]  # Predict directly on the input DataFrame
+            prediction_result['oil_level_anomaly_prediction'] = int(prediction)
 
         elif prediction_type == 'engine_temp_anomaly':
-            model_path = 'engine Temp anamoly.pkl'
-            scaler_path = 'scaler.pkl'  # Assuming you saved a scaler with this name
+            model_path = 'engineTempAnamoly.pkl'
             model = joblib.load(model_path)
-            scaler = joblib.load(scaler_path)
-            scaled_data = scaler.transform(input_df)
-            prediction = model.predict(scaled_data)[0]
+            prediction = model.predict(input_df)[0]
             prediction_result['engine_temp_anomaly_prediction'] = int(prediction)  # Assuming binary output
 
         else:
