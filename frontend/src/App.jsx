@@ -1,20 +1,23 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Landing from "./pages/Landing";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing"
+import { AuthProvider } from "./auth-context";
 import AuthForm from "./components/auth/AuthForm";
 import Dashboard from "./pages/Dashboard";
-import Statistics from "./pages/StatisticsPage";
+// Import other components as needed
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/Auth" element={<AuthForm />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/statistics" element={<Statistics />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/Auth" element={<AuthForm />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          {/* Add other routes as needed */}
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
-};
+}
 
-export default App;
+export default App
