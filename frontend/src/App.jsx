@@ -1,10 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Landing from "./pages/Landing"
+import Landing from "./pages/Landing";
 import { AuthProvider } from "./auth-context";
 import AuthForm from "./components/auth/AuthForm";
 import Statistics from "./pages/StatisticsPage";
+import MoreStatistics from "./pages/MoreStatistics";
 import Dashboard from "./pages/Dashboard";
-// Import other components as needed
+
+// Parameter detail components
+import TyrePressure from "./components/Parameters/tyrePressure";
+import TotalLife from "./components/Parameters/totalLife";
+import EngineTemperature from "./components/Parameters/engineTemperature";
+import OilLevel from "./components/Parameters/oilLevel";
 
 function App() {
   return (
@@ -12,14 +18,20 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/Auth" element={<AuthForm />} />
+          <Route path="/auth" element={<AuthForm />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/statistics" element={<Statistics />} />
-          {/* Add other routes as needed */}
+          <Route path="/Statistics" element={<Statistics />} />
+          <Route path="/MoreStatistics" element={<MoreStatistics />} />
+
+          {/* Individual parameter detail routes */}
+          <Route path="/MoreStatistics/tyre-pressure" element={<TyrePressure />} />
+          <Route path="/MoreStatistics/total-life" element={<TotalLife />} />
+          <Route path="/MoreStatistics/engine-temperature" element={<EngineTemperature />} />
+          <Route path="/MoreStatistics/oil-level" element={<OilLevel />} />
         </Routes>
       </Router>
     </AuthProvider>
   );
 }
 
-export default App
+export default App;

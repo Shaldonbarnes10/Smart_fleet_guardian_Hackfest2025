@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import defaultImage from "../../assets/Truck.jpg"; // Import your default image here
 
 const VehicleInfo = ({ vehicleName, vehicleRegNumber }) => {
   const [photo, setPhoto] = useState(null);
@@ -6,14 +7,12 @@ const VehicleInfo = ({ vehicleName, vehicleRegNumber }) => {
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPhoto(URL.createObjectURL(file));
+      setPhoto(URL.createObjectURL(file)); // Update the photo with the uploaded file
     }
   };
-  
 
-  const handleDelete = (e) => {
-    e.preventDefault();
-    setPhoto(null);
+  const handleDelete = () => {
+    setPhoto(null); // Remove the current photo, whether it's the default or uploaded
   };
 
   return (
@@ -29,12 +28,21 @@ const VehicleInfo = ({ vehicleName, vehicleRegNumber }) => {
           onChange={handlePhotoChange}
           className="mt-2 cursor-pointer hover:underline"
         />
-        {photo && (
-          <div className="mt-4">
-            <img src={photo} alt="Vehicle" className="w-32 h-32 object-cover" />
-            <button className="hover:underline cursor-pointer rounded-2xl mt-2.5 p-2" onClick={handleDelete}>Delete</button>
+        <div className="mt-4">
+          <img
+            src={photo || defaultImage} // Show uploaded photo or default image
+            alt="Vehicle"
+            className="w-32 h-32 object-cover"
+          />
+          <div className="mt-2">
+            <button
+              className="hover:underline cursor-pointer rounded-2xl mt-2.5 p-2"
+              onClick={handleDelete}
+            >
+              {photo ? "Delete" : "Delete Image"} {/* Button text changes */}
+            </button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
