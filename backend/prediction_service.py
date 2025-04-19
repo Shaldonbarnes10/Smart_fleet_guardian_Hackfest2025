@@ -16,6 +16,8 @@ def predict_from_json(json_data, prediction_type):
     Returns:
         str: A JSON string containing the prediction result.
     """
+    
+
     try:
         data = json.loads(json_data)
         input_df = pd.DataFrame([data])  # Create a DataFrame from the JSON data
@@ -25,16 +27,26 @@ def predict_from_json(json_data, prediction_type):
         return json.dumps({"error": f"Error creating DataFrame: {e}"})
 
     prediction_result = {}
+    print("Input columns:", input_df.columns.tolist())
+    
+
 
     try:
         if prediction_type == 'rul':
-            model_path = 'RULpredictor model.pkl'
-            scaler_path = 'rul predictor scalar.pkl'
+            print("Loaded RUL model")
+            model_path = 'rul_predictor_model.pkl'
             model = joblib.load(model_path)
-            scaler = joblib.load(scaler_path)
-            scaled_data = scaler.transform(input_df)
-            prediction = model.predict(scaled_data)[0]
+
+            print("Input DataFrame:")
+            print(input_df)
+
+            prediction = model.predict(input_df)[0]
+            print(f"Prediction: {prediction}")
+            
             prediction_result['RUL_prediction'] = f"{prediction:.2f} hours"
+
+
+            
 
         elif prediction_type == 'tire_anomaly':
             model_path = 'tire anamoly.pkl'
@@ -66,6 +78,7 @@ def predict_from_json(json_data, prediction_type):
         else:
             return json.dumps({"error": f"Invalid prediction type: {prediction_type}"})
 
+        print("Final prediction result:", prediction_result)
         return json.dumps(prediction_result)
 
     except FileNotFoundError:
