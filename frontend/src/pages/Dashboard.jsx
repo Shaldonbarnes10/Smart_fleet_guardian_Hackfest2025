@@ -21,7 +21,7 @@ const mockStats = [
 
 const Dashboard = () => {
   const userName = "John";
-  const vehicleName = "Toyota Corolla";
+  const vehicleName = "Tata";
   const vehicleRegNumber = "ABC1234";
   const tyrePressure = ["32 psi", "30 psi"];
 

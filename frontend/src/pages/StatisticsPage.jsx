@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/dashboard/Navbar";
-import logo from "../assets/react.svg"; // Make sure you have a logo file in /src/assets
+import logo from "../assets/react.svg";
 
 export default function Statistics() {
   return (
@@ -29,7 +29,7 @@ export default function Statistics() {
         <div className="text-center">
           <button
             onClick={() => alert("Redirecting...")}
-            className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow hover:bg-yellow-600 transition"
+            className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow hover:bg-yellow-600 transition cursor-pointer"
           >
             View More Statistics
           </button>
