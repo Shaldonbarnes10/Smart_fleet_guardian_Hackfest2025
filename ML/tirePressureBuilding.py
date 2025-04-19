@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
 import joblib  # for saving the model
 import os
-print("Current Working Directory:", os.getcwd())
+
 # Load dataset
 df = pd.read_csv("truckData_with_anomaly.csv")
 
